@@ -3,22 +3,20 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <div>
-        <formview method="get">
-             <label for="NIF">NIF:</label>
-            <input type="text" id="NIF" size="20" ><br><br>
-            <label for="Nombre">Nombre:</label>
-            <input type="text" id="Nombre" size="20" ><br><br>
-            <label for="Edad">Edad:</label>
-            <input type="text" id="Edad" size="20" ><br>
-            <button>Leer</button>
-            <button>Leer Primero</button>
-            <button>Leer Anterior</button>
-            <button>Leer Siguiente</button>
-            <button>Crear</button>
-            <button>Actualizar</button>
-            <button>Borrar</button>
-            
-        </formview>
+        NIF:
+        <asp:TextBox ID="TNIF" runat="server"></asp:TextBox><br /><br />
+        Nombre:
+        <asp:TextBox ID="TNombre" runat="server"></asp:TextBox><br /><br />
+        Edad:
+        <asp:TextBox ID="TEdad" runat="server"></asp:TextBox><br /><br />
+
+        <asp:button ID="Leer" runat="server" Text="Leer" />
+        <asp:button ID="Leer_Primero" runat="server" Text="Leer Primero" />
+        <asp:button ID="Leer_Anterior" runat="server" Text="Leer Anterior" />
+        <asp:button ID="Leer_Siguiente" runat="server" Text="Leer Siguiente" />
+        <asp:button ID="Crear" runat="server" Text="Crear" />
+        <asp:button ID="Actualizar" runat="server" Text="Actualizar" />
+        <asp:button ID="Borrar" runat="server" Text="Borrar" />
        
     </div>
 </asp:Content>
