@@ -14,7 +14,7 @@
         <asp:button ID="Leer_Primero" runat="server" Text="Leer Primero" />
         <asp:button ID="Leer_Anterior" runat="server" Text="Leer Anterior" />
         <asp:button ID="Leer_Siguiente" runat="server" Text="Leer Siguiente" />
-        <asp:button ID="Crear" runat="server" Text="Crear" />
+        <asp:button ID="Crear"  runat="server" Text="Crear" />
         <asp:button ID="Actualizar" runat="server" Text="Actualizar" />
         <asp:button ID="Borrar" runat="server" Text="Borrar" />
        

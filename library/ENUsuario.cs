@@ -51,39 +51,73 @@ namespace library
 
         public bool createUsuario()
         {
-
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            if (!nuevo.readUsuario(this))
+            {
+                devolver = nuevo.createUsuario(this);
+            }
+            return devolver;
         }
 
         public bool readUsuario()
         {
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            devolver = nuevo.readUsuario(this);
+            return devolver;
         }
 
         public bool readFirstUsuario()
         {
-
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            devolver = nuevo.readFirstUsuario(this);
+            return devolver;
         }
 
         public bool readNextUsuario()
         {
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            if (nuevo.readUsuario(this))
+            {
+                devolver = nuevo.readNextUsuario(this);
+            }
+            return devolver;
         }
 
         public bool readPrevUsuario()
         {
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            if (nuevo.readUsuario(this))
+            {
+                devolver = nuevo.readPrevUsuario(this);
+            }
+            return devolver;
         }
 
         public bool updateUsuario()
         {
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            if (nuevo.readUsuario(this))
+            {
+                devolver = nuevo.updateUsuario(this);
+            }
+            return devolver;
         }
 
         public bool deleteUsuario()
         {
-            return false;
+            bool devolver = false;
+            CADUsuario nuevo = new CADUsuario();
+            if (nuevo.readUsuario(this))
+            {
+                devolver = nuevo.deleteUsuario(this);
+            }
+            return devolver;
         }
     }
 }
