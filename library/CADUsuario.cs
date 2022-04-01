@@ -25,14 +25,15 @@ namespace library
         public bool createUsuario(ENUsuario en)
         {
             bool devolver = true;
+            SqlConnection conexion = null;
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("Insert INTO [dbo].[Usuarios] (nombre, nif, edad) VALUES ('" + en._nombre + "', '" + en._nif + "', " + en._edad + ")",conexion);
+                
                 com.ExecuteNonQuery();
                 devolver = true;
-                conexion.Close();
             }
             catch (SqlException ex)
             {
@@ -44,19 +45,29 @@ namespace library
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
 
+            }
             return devolver;
         }
 
         public bool readUsuario(ENUsuario en)
         {
             bool devolver = true;
+            SqlConnection conexion = null;
+            SqlDataReader buscar = null;
+
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("Select * from [dbo].[Usuarios] Where nif = '" + en._nif + "' ", conexion);
-                SqlDataReader buscar = com.ExecuteReader();
+                buscar = com.ExecuteReader();
                 buscar.Read();
 
                 if (buscar["nif"].ToString() == en._nif)
@@ -69,9 +80,6 @@ namespace library
                 {
                     devolver = false;
                 }
-
-                buscar.Close();
-                conexion.Close();
             }
             catch (SqlException ex)
             {
@@ -84,18 +92,32 @@ namespace library
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
+                if (buscar != null)
+                {
+                    buscar.Close();
+                }
+            }
             return devolver;
         }
 
         public bool readFirstUsuario(ENUsuario en)
         {
             bool devolver = true;
+            SqlConnection conexion = null;
+            SqlDataReader buscar = null;
+
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("Select * From [dbo].[Usuarios]", conexion);
-                SqlDataReader buscar = com.ExecuteReader();
+                buscar = com.ExecuteReader();
 
                 buscar.Read();
                 en._nif = buscar["nif"].ToString();
@@ -103,8 +125,6 @@ namespace library
                 en._edad = int.Parse(buscar["edad"].ToString());
 
                 devolver = true;
-                buscar.Close();
-                conexion.Close();
 
             }
             catch (SqlException ex)
@@ -117,6 +137,17 @@ namespace library
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
+                if (buscar != null)
+                {
+                    buscar.Close();
+                }
+            }
 
             return devolver;
         }
@@ -124,12 +155,15 @@ namespace library
         public bool readNextUsuario(ENUsuario en)
         {
             bool devolver = false;
+            SqlConnection conexion = null;
+            SqlDataReader buscar = null;
+
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("Select * From [dbo].[Usuarios]", conexion);
-                SqlDataReader buscar = com.ExecuteReader();
+                buscar = com.ExecuteReader();
 
                 while (buscar.Read())
                 {
@@ -146,9 +180,6 @@ namespace library
                         }
                     }
                 }
-
-                buscar.Close();
-                conexion.Close();
             }
             catch (SqlException ex)
             {
@@ -160,6 +191,17 @@ namespace library
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
+                if (buscar != null)
+                {
+                    buscar.Close();
+                }
+            }
 
             return devolver;
         }
@@ -167,12 +209,14 @@ namespace library
         public bool readPrevUsuario(ENUsuario en)
         {
             bool devolver = false;
+            SqlConnection conexion = null;
+            SqlDataReader buscar = null;
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("Select * From [dbo].[Usuarios]", conexion);
-                SqlDataReader buscar = com.ExecuteReader();
+                buscar = com.ExecuteReader();
                 buscar.Read();
                 ENUsuario resp = new ENUsuario();
 
@@ -196,9 +240,6 @@ namespace library
                 en._nif = resp._nif;
                 en._nombre = resp._nombre;
                 en._edad = resp._edad;
-
-                buscar.Close();
-                conexion.Close();
                 
             }
             catch (SqlException ex)
@@ -211,6 +252,17 @@ namespace library
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
+                if (buscar != null)
+                {
+                    buscar.Close();
+                }
+            }
 
             return devolver;
         }
@@ -218,13 +270,13 @@ namespace library
         public bool updateUsuario(ENUsuario en)
         {
             bool devolver = false;
+            SqlConnection conexion = null;
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("UPDATE [dbo].[Usuarios] SET nombre= '" + en._nombre + "' , edad=" + en._edad + "WHERE nif = '" + en._nif + "'", conexion);
                 com.ExecuteNonQuery();
-                conexion.Close();
                 devolver = true;
             }
             catch (SqlException ex)
@@ -237,20 +289,26 @@ namespace library
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
-
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
+            }
             return devolver;
         }
 
         public bool deleteUsuario(ENUsuario en)
         {
             bool devolver = true;
+            SqlConnection conexion = null;
             try
             {
-                SqlConnection conexion = new SqlConnection(constring);
+                conexion = new SqlConnection(constring);
                 conexion.Open();
                 SqlCommand com = new SqlCommand("DELETE FROM [dbo].[Usuarios] WHERE nif = '" + en._nif + "'", conexion);
                 com.ExecuteNonQuery();
-                conexion.Close();
                 devolver = true;
             }
             catch (SqlException ex)
@@ -262,6 +320,13 @@ namespace library
             {
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            finally
+            {
+                if (conexion != null)
+                {
+                    conexion.Close();
+                }
             }
 
             return devolver;
