@@ -10,13 +10,16 @@
         Edad:
         <asp:TextBox ID="TEdad" runat="server"></asp:TextBox><br /><br />
 
-        <asp:button ID="Leer" runat="server" Text="Leer" />
-        <asp:button ID="Leer_Primero" runat="server" Text="Leer Primero" />
-        <asp:button ID="Leer_Anterior" runat="server" Text="Leer Anterior" />
-        <asp:button ID="Leer_Siguiente" runat="server" Text="Leer Siguiente" />
-        <asp:button ID="Crear"  runat="server" Text="Crear" />
-        <asp:button ID="Actualizar" runat="server" Text="Actualizar" />
-        <asp:button ID="Borrar" runat="server" Text="Borrar" />
+        
+
+        <asp:button ID="Leer" onClick="CLeer" runat="server" Text="Leer" />
+        <asp:button ID="Leer_Primero" onClick="LeerP" runat="server" Text="Leer Primero" />
+        <asp:button ID="Leer_Anterior" onClick="LeerA" runat="server" Text="Leer Anterior" />
+        <asp:button ID="Leer_Siguiente" onClick="LeerS" runat="server" Text="Leer Siguiente" />
+        <asp:button ID="Crear" onClick="CCrear" runat="server" Text="Crear" />
+        <asp:button ID="Actualizar" OnClick="Act" runat="server" Text="Actualizar" />
+        <asp:button ID="Borrar" OnClick="Borr" runat="server" Text="Borrar" /><br />
+        <asp:Label ID="MError" runat="server"></asp:Label>
        
     </div>
 </asp:Content>

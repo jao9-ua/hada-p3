@@ -11,7 +11,7 @@ using System.Configuration;
 
 namespace library
 {
-    class CADUsuario
+    public class CADUsuario
     {
         private string constring;
 
@@ -29,9 +29,17 @@ namespace library
             {
                 SqlConnection conexion = new SqlConnection(constring);
                 conexion.Open();
-                SqlCommand com = new SqlCommand("Insert INTO [dbo].[Usuarios] (nombre, nif, edad) VALUES ('" + en._nombre + "', '" + en._nif + "', " + en._edad + ")");
+                SqlCommand com = new SqlCommand("Insert INTO [dbo].[Usuarios] (nombre, nif, edad) VALUES ('" + en._nombre + "', '" + en._nif + "', " + en._edad + ")",conexion);
+                com.ExecuteNonQuery();
+                devolver = true;
+                conexion.Close();
             }
             catch (SqlException ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            catch (Exception ex)
             {
                 devolver = false;
                 Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
@@ -47,7 +55,7 @@ namespace library
             {
                 SqlConnection conexion = new SqlConnection(constring);
                 conexion.Open();
-                SqlCommand com = new SqlCommand("Select * from [dbo].[Usuarios] Where nif ='" + en._nif + "' ", conexion);
+                SqlCommand com = new SqlCommand("Select * from [dbo].[Usuarios] Where nif = '" + en._nif + "' ", conexion);
                 SqlDataReader buscar = com.ExecuteReader();
                 buscar.Read();
 
@@ -68,8 +76,13 @@ namespace library
             catch (SqlException ex)
             {
                 devolver = false;
-                Console.WriteLine("User operation has failed.Error: { 0}", ex.Message);
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
 
+            }
+            catch(Exception ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
             return devolver;
         }
@@ -97,7 +110,12 @@ namespace library
             catch (SqlException ex)
             {
                 devolver = false;
-                Console.WriteLine("User operation has failed.Error: { 0}", ex.Message);
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
 
             return devolver;
@@ -105,7 +123,7 @@ namespace library
 
         public bool readNextUsuario(ENUsuario en)
         {
-            bool devolver = true;
+            bool devolver = false;
             try
             {
                 SqlConnection conexion = new SqlConnection(constring);
@@ -117,21 +135,30 @@ namespace library
                 {
                     if (en._nif.ToString() == buscar["nif"].ToString())
                     {
-                        en._nif = buscar["nif"].ToString();
-                        en._nombre = buscar["nombre"].ToString();
-                        en._edad = int.Parse(buscar["edad"].ToString());
-                        break;
+                        if (buscar.Read())
+                        {
+
+                            en._nif = buscar["nif"].ToString();
+                            en._nombre = buscar["nombre"].ToString();
+                            en._edad = int.Parse(buscar["edad"].ToString());
+                            devolver = true;
+                            break;
+                        }
                     }
                 }
 
-                devolver = true;
                 buscar.Close();
                 conexion.Close();
             }
             catch (SqlException ex)
             {
                 devolver = false;
-                Console.WriteLine("User operation has failed.Error: { 0}", ex.Message);
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
 
             return devolver;
@@ -139,7 +166,7 @@ namespace library
 
         public bool readPrevUsuario(ENUsuario en)
         {
-            bool devolver = true;
+            bool devolver = false;
             try
             {
                 SqlConnection conexion = new SqlConnection(constring);
@@ -149,19 +176,22 @@ namespace library
                 buscar.Read();
                 ENUsuario resp = new ENUsuario();
 
+
                
-                
-
-                while (buscar.Read()) {
-
-
                     resp._nombre = buscar["nombre"].ToString();
                     resp._nif = buscar["nif"].ToString();
                     resp._edad = int.Parse(buscar["edad"].ToString());
-                    if(buscar["nif"].ToString() == en._nif)
+                while (buscar.Read()) {
+
+                    if (buscar["nif"].ToString() == en._nif)
                     {
+                        devolver = true;
                         break;
-                    }                
+                    }
+                    resp._nombre = buscar["nombre"].ToString();
+                    resp._nif = buscar["nif"].ToString();
+                    resp._edad = int.Parse(buscar["edad"].ToString());
+                                   
                 }
                 en._nif = resp._nif;
                 en._nombre = resp._nombre;
@@ -169,12 +199,17 @@ namespace library
 
                 buscar.Close();
                 conexion.Close();
-                devolver = true;
+                
             }
             catch (SqlException ex)
             {
                 devolver = false;
-                Console.WriteLine("User operation has failed.Error: { 0}", ex.Message);
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
 
             return devolver;
@@ -182,19 +217,25 @@ namespace library
 
         public bool updateUsuario(ENUsuario en)
         {
-            bool devolver = true;
+            bool devolver = false;
             try
             {
                 SqlConnection conexion = new SqlConnection(constring);
                 conexion.Open();
-                SqlCommand com = new SqlCommand("UPDATE [dbo].[Usuarios] SET nombre= '" + en._nombre + "' ,edad=" + en._edad + "WHERE nif = '" + en._nif + "'", conexion);
+                SqlCommand com = new SqlCommand("UPDATE [dbo].[Usuarios] SET nombre= '" + en._nombre + "' , edad=" + en._edad + "WHERE nif = '" + en._nif + "'", conexion);
                 com.ExecuteNonQuery();
                 conexion.Close();
+                devolver = true;
             }
             catch (SqlException ex)
             {
                 devolver = false;
-                Console.WriteLine("User operation has failed.Error: { 0}", ex.Message);
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
 
             return devolver;
@@ -215,7 +256,12 @@ namespace library
             catch (SqlException ex)
             {
                 devolver = false;
-                Console.WriteLine("User operation has failed.Error: { 0}", ex.Message);
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
+            }
+            catch (Exception ex)
+            {
+                devolver = false;
+                Console.WriteLine("User operation has failed.Error: {0}", ex.Message);
             }
 
             return devolver;

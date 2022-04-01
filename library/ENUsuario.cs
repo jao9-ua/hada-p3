@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace library
 {
-    class ENUsuario
+    public class ENUsuario
     {
         private string nif;
         private string nombre;
